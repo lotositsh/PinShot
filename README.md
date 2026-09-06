@@ -71,3 +71,20 @@ Settings are stored in `screenshot_mini_settings.json` next to the app, includin
 ## License
 
 Licensed under the GNU General Public License. See [LICENSE](LICENSE) for details.
+
+## ❤️ Support the Project
+
+If you find this project useful and would like to support its development, donations are appreciated.
+
+### Litecoin (LTC)
+
+```
+ltc1qp5hu4lj274tngwv64v33lxkmnhe243autwfrr3
+```
+
+### Tron (TRX)
+
+```
+TCDS3V5V7rWuxdab9SLCDRXz7LTwZKMzfB
+```
+

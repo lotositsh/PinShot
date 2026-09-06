@@ -15,6 +15,7 @@ packages/
 *.dll
 *.dylib
 *.exe
+*.bat
 
 # Логи
 *.log
