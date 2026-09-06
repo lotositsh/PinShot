@@ -1,0 +1,89 @@
+# Зависимости
+node_modules/
+vendor/
+packages/
+*.jar
+*.war
+*.ear
+
+# Скомпилированные файлы
+*.class
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dll
+*.dylib
+*.exe
+
+# Логи
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Файлы окружения
+.env
+.env.local
+.env.*.local
+*.local
+
+# IDE и редакторы
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.iml
+.project
+.classpath
+.settings/
+
+# Сборка и дистрибутивы
+dist/
+build/
+out/
+target/
+bin/
+*.min.js
+*.min.css
+
+# Временные файлы
+*.tmp
+*.temp
+*.cache
+*.bak
+
+# Покрытие кода
+coverage/
+.nyc_output/
+*.lcov
+
+# Деплой
+*.pid
+*.seed
+*.pid.lock
+
+# Документация
+docs/_build/
+api-docs/
+
+# Архивы
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Базы данных
+*.db
+*.sqlite
+*.sqlite3
+
+# Файлы пользователей
+*.pem
+*.key
+*.crt
+*.p12

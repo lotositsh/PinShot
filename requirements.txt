@@ -1,0 +1,18 @@
+altgraph==0.17.5
+certifi==2026.7.22
+charset-normalizer==3.4.9
+idna==3.15
+importlib-metadata==8.5.0
+keyboard==0.13.5
+packaging==26.2
+pefile==2024.8.26
+pillow==10.4.0
+pyinstaller==6.21.0
+pyinstaller-hooks-contrib==2026.6
+pyperclip==1.11.0
+pywin32==311
+pywin32-ctypes==0.2.3
+requests==2.32.4
+urllib3==2.2.3
+zipp==3.20.2
+Advise the project build team to remove all unnecessary stuff.
