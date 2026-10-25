@@ -1,5 +1,7 @@
 import tkinter as tk
-from tkinter import Menu
+from tkinter import Menu, simpledialog
+
+import naming
 
 WINDOW_SIZE = 36
 BTN_COLOR_OK = "#4CAF50"
@@ -130,6 +132,9 @@ class MainWindow:
 
         self.context_menu.add_command(label="Quality...", command=lambda: self.on_quality_settings(self.root))
 
+        # File name sent to imgbb (see naming.py)
+        self.context_menu.add_cascade(label="File name", menu=self.build_filename_menu())
+
         # Selection overlay behavior
         selection_menu = Menu(self.context_menu, tearoff=0)
         self.dim_var = tk.BooleanVar(value=self.config.dim_selection)
@@ -172,6 +177,64 @@ class MainWindow:
         self.context_menu.add_cascade(label="Hotkey", menu=hotkeys_menu)
         self.context_menu.add_separator()
         self.context_menu.add_command(label="Exit", command=self.exit_app)
+
+    def build_filename_menu(self):
+        cfg = self.config
+        ext = naming.EXT_BY_FORMAT.get(cfg.image_format, "png")
+        menu = Menu(self.context_menu, tearoff=0)
+
+        current = naming.sample(cfg.filename_style, cfg.filename_prefix, cfg.filename_ext, ext)
+        menu.add_command(label=f"Now: {current}", state="disabled")
+        menu.add_separator()
+
+        for group in naming.groups():
+            sub = Menu(menu, tearoff=0)
+            for sid in naming.styles_in_group(group):
+                if sid == naming.DEFAULT_STYLE:
+                    text = "Default (no name, no metadata)"
+                else:
+                    text = naming.sample(sid, "", cfg.filename_ext, ext)
+                sub.add_command(
+                    label=f"{'✓ ' if sid == cfg.filename_style else '  '}{text}",
+                    command=lambda s=sid: self.set_filename_style(s)
+                )
+            mark = "✓ " if cfg.filename_style in naming.styles_in_group(group) else "  "
+            menu.add_cascade(label=f"{mark}{group}", menu=sub)
+
+        menu.add_separator()
+        self.filename_ext_var = tk.BooleanVar(value=cfg.filename_ext)
+        menu.add_checkbutton(
+            label=f"Add extension (.{ext})",
+            variable=self.filename_ext_var,
+            command=self.toggle_filename_ext
+        )
+        prefix_label = f"Prefix: {cfg.filename_prefix}" if cfg.filename_prefix else "Prefix: (none)"
+        menu.add_command(label=f"{prefix_label}...", command=self.ask_filename_prefix)
+        return menu
+
+    def set_filename_style(self, style_id):
+        self.config.filename_style = style_id
+        self.config.save()
+        self.setup_context_menu()
+
+    def toggle_filename_ext(self):
+        self.config.filename_ext = self.filename_ext_var.get()
+        self.config.save()
+        self.setup_context_menu()
+
+    def ask_filename_prefix(self):
+        value = simpledialog.askstring(
+            "File name prefix",
+            "Text put in front of every file name\n(leave empty for no prefix).\n"
+            "Ignored by the Default style.",
+            initialvalue=self.config.filename_prefix,
+            parent=self.root
+        )
+        if value is None:  # cancelled
+            return
+        self.config.filename_prefix = naming.sanitize(value)
+        self.config.save()
+        self.setup_context_menu()
 
     def select_api(self, name):
         if name not in self.config.apis:

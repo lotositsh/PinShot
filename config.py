@@ -16,6 +16,10 @@ class Config:
         self.dim_selection = True  # dim (alpha-shade) everything outside the selected region
         self.freeze_screen = True  # show a frozen snapshot while selecting vs. the live desktop
         self.show_size_label = True  # show the W x H readout while dragging the selection
+        self.filename_style = "default"  # see naming.py; "default" = send no name (no metadata)
+        self.filename_prefix = ""  # custom text put in front of the generated name
+        self.filename_ext = False  # append .png/.webp/.jpg to the name
+        self.filename_counter = 0  # running number for counter-based styles
 
     def load(self):
         if not os.path.exists(SETTINGS_FILE):
@@ -36,6 +40,10 @@ class Config:
         self.dim_selection = settings.get("dim_selection", True)
         self.freeze_screen = settings.get("freeze_screen", True)
         self.show_size_label = settings.get("show_size_label", True)
+        self.filename_style = settings.get("filename_style", "default")
+        self.filename_prefix = settings.get("filename_prefix", "")
+        self.filename_ext = settings.get("filename_ext", False)
+        self.filename_counter = settings.get("filename_counter", 0)
 
         if self.current_api not in self.apis and self.apis:
             self.current_api = next(iter(self.apis))
@@ -52,6 +60,10 @@ class Config:
             "dim_selection": self.dim_selection,
             "freeze_screen": self.freeze_screen,
             "show_size_label": self.show_size_label,
+            "filename_style": self.filename_style,
+            "filename_prefix": self.filename_prefix,
+            "filename_ext": self.filename_ext,
+            "filename_counter": self.filename_counter,
         }
         try:
             with open(SETTINGS_FILE, "w") as f:

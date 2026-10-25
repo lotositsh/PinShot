@@ -9,6 +9,7 @@ from config import Config
 from uploader import ImageUploader
 from screenshot_taker import ScreenshotTaker
 from image_processor import ImageProcessor
+from naming import build_name
 from gui import MainWindow
 from dialogs import Dialogs
 
@@ -124,9 +125,10 @@ class ScreenshotApp:
 
         try:
             image_bytes, size, file_size = self.image_processor.process_screenshot(screenshot)
+            name = build_name(self.config, size, image_bytes)
             threading.Thread(
                 target=self.upload_and_process,
-                args=(image_bytes, size, file_size),
+                args=(image_bytes, size, file_size, name),
                 daemon=True
             ).start()
         except Exception as e:
@@ -134,8 +136,8 @@ class ScreenshotApp:
             self.gui.btn.config(bg="#f44336")
             self.gui.root.after(500, lambda: self.gui.btn.config(bg="#4CAF50"))
 
-    def upload_and_process(self, image_bytes, size, file_size):
-        url = self.uploader.upload_to_imgbb(image_bytes)
+    def upload_and_process(self, image_bytes, size, file_size, name=None):
+        url = self.uploader.upload_to_imgbb(image_bytes, name)
         self.gui.root.after(0, self.process_result, url, size, file_size)
 
     def process_result(self, url, size, file_size):
